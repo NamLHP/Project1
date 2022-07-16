@@ -1,13 +1,14 @@
 package vti.com.entity.dto;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import vti.com.entity.Account;
 import vti.com.entity.enumerated.DepartmentType;
 
 public class DepartmentDTO {
-  private Long id;
 
   private String name;
 
@@ -17,22 +18,20 @@ public class DepartmentDTO {
 
   private Date createDate;
 
-  public DepartmentDTO(Long id, String name, Integer total_member,
-      DepartmentType type, Date createDate) {
-    this.id = id;
-    this.name = name;
-    this.total_member = total_member;
-    this.type = type;
-    this.createDate = createDate;
+//  private List<Account> accountList;
+
+
+  public DepartmentDTO() {
   }
 
-  public Long getId() {
-    return id;
-  }
+//  public List<Account> getAccountList() {
+//    return accountList;
+//  }
+//
+//  public void setAccountList(List<Account> accountList) {
+//    this.accountList = accountList;
+//  }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
 
   public String getName() {
     return name;

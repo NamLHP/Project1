@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vti.com.entity.Account;
 import vti.com.entity.dto.AccountDto;
+import vti.com.entity.dto.DepartmentDTO;
 import vti.com.service.AccountServiceImp;
 
 import java.util.List;
@@ -31,35 +32,19 @@ public class AccountController {
     this.accountServiceImp = accountServiceImp;
   }
 
+  @GetMapping("")
+  ResponseEntity<Page<AccountDto>> findAll(Pageable pageable) {
+    return ResponseEntity.ok(accountServiceImp.findAll(pageable));
+  }
 
-  @GetMapping("/oneAccounts/{id}")
+  @GetMapping("{id}")
   ResponseEntity<Optional<Account>> findOne(@PathVariable Long id) {
     return ResponseEntity.ok(accountServiceImp.findOne(id));
   }
 
-  @GetMapping("/listAccounts")
-  ResponseEntity<List<AccountDto>> findAll() {
-    return ResponseEntity.ok(accountServiceImp.findAll());
-  }
-
-  @GetMapping("/listAccounts/page")
-  ResponseEntity<Page<AccountDto>> findAll(Pageable pageable) {
-    return ResponseEntity.ok(accountServiceImp.findAllWithPage(pageable));
-  }
-
-//    @GetMapping("/listAccountsByLastName/{username}")
-//    ResponseEntity<List<AccountDto>> findAccountLikeLastName(@PathVariable String username ){
-//        return ResponseEntity.ok(accountServiceImp.findAccountLikeLastNameToDTO(username));
-//    }
-
-  @GetMapping("/listAccountsByLastName")
-  ResponseEntity<List<AccountDto>> findAccountLikeLastName(@RequestParam String username)
-      throws NotFoundException {
-    return ResponseEntity.ok(accountServiceImp.findAccountLikeLastNameToDTO(username));
-  }
 
   @DeleteMapping("/{id}")
-  ResponseEntity<Account> deleteAccountByID(@PathVariable Long id) {
+  ResponseEntity<AccountDto> deleteAccountByID(@PathVariable Long id) {
     try {
       return ResponseEntity.ok().body(accountServiceImp.deleteAccount(id));
     } catch (NotFoundException e) {
@@ -67,25 +52,21 @@ public class AccountController {
     }
   }
 
-  @PostMapping("/newAccount")
-  public ResponseEntity<Account> create(@RequestBody Account account) {
-        accountServiceImp.createAccount(account);
-    if (account == null) {
-       new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } else {
-      return  new ResponseEntity<>(account, HttpStatus.CREATED);
+  @PostMapping("")
+  public ResponseEntity<AccountDto> create(@RequestBody Account account) {
+    try {
+      return ResponseEntity.ok().body(accountServiceImp.createAccount(account));
+    } catch (NullPointerException e) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    return new ResponseEntity<>(account, HttpStatus.CREATED);
   }
 
-  @PutMapping("/accountAfterModyfi/{id}")
-  public ResponseEntity<Account> update(@RequestBody Account account , @PathVariable Long id) {
+  @PutMapping("/{id}")
+  public ResponseEntity<AccountDto> update(@RequestBody Account account, @PathVariable Long id) {
     try {
-      accountServiceImp.updateAccount(id,account);
+      return ResponseEntity.ok().body(accountServiceImp.updateAccount(id, account));
     } catch (NotFoundException e) {
-      e.printStackTrace();
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
-    return new ResponseEntity<>(account, HttpStatus.OK);
   }
 }

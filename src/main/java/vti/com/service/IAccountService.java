@@ -10,20 +10,18 @@ import java.util.Optional;
 import vti.com.entity.dto.AccountDto;
 
 public interface IAccountService {
-    List<AccountDto> findAll();
 
-    Page<AccountDto> findAllWithPage(Pageable pageable);
+  Page<AccountDto> findAll(Pageable pageable);
 
-    Optional<Account> findOne(Long id);
+  Optional<Account> findOne(Long id);
 
-    Account createAccount(Account account);
+  AccountDto createAccount(Account account);
 
 
-    Account updateAccount(Long id, Account account) throws NotFoundException;
+  AccountDto updateAccount(Long id, Account account) throws NotFoundException;
 
-    Account deleteAccount(Long id) throws NotFoundException;
+  AccountDto deleteAccount(Long id) throws NotFoundException;
 
-    Optional<Account> findAccountLikeLastName(String lastName );
 
-    List<AccountDto>  findAccountLikeLastNameToDTO(String lastName) throws NotFoundException;
+
 }
