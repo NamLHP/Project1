@@ -10,6 +10,8 @@ import java.util.function.Function;
 @Table(name = "Account")
 public class Account implements Serializable {
 
+  private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
@@ -49,9 +51,9 @@ public class Account implements Serializable {
         '}';
   }
 
-//  public Department getDepartment() {
-//    return department;
-//  }
+  public Department getDepartment() {
+    return department;
+  }
 
   public void setDepartment(Department department) {
     this.department = department;

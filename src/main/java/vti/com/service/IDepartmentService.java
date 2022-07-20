@@ -6,8 +6,10 @@ import vti.com.entity.Department;
 
 import java.util.List;
 import java.util.Optional;
+import vti.com.entity.dto.AccountDTO;
 import vti.com.entity.dto.DepartmentDTO;
-import vti.com.entity.form.DepartmentForm;
+import vti.com.service.specification.Expression;
+
 
 public interface IDepartmentService {
 
@@ -15,11 +17,13 @@ public interface IDepartmentService {
 
     Optional<Department> findOne(Long id);
 
-//    DepartmentDTO createDepartment(DepartmentForm departmentForm);
-
     DepartmentDTO createDepartment(Department department);
 
     DepartmentDTO updateDepartment(Long id, Department department) throws NotFoundException;
 
     DepartmentDTO deleteDepartment(Long id) throws NotFoundException;
+
+    Optional<DepartmentDTO> findOneToDTO(Long id);
+
+    List<DepartmentDTO> search(Expression expression);
 }

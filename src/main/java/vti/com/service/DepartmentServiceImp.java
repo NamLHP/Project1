@@ -1,26 +1,39 @@
 package vti.com.service;
 
+import java.util.List;
 import java.util.stream.Collectors;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vti.com.entity.Account;
+
 import vti.com.entity.Department;
+
 import vti.com.entity.dto.DepartmentDTO;
-import vti.com.entity.form.DepartmentForm;
 import vti.com.repository.IDepartmentRepository;
 
 import java.util.Optional;
+
+import vti.com.service.specification.DepartmentSpecification;
+import vti.com.service.specification.Expression;
 
 @Service
 public class DepartmentServiceImp implements IDepartmentService {
 
     @Autowired
     private IDepartmentRepository departmentRepository;
+
+    private final ModelMapper modelMapper;
+
+    public DepartmentServiceImp(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
 
     public Page<DepartmentDTO> findAll(Pageable pageable) {
         Page<Department> departments = departmentRepository.findAll(pageable);
@@ -70,10 +83,37 @@ public class DepartmentServiceImp implements IDepartmentService {
     }
 
 
+    @Override
+    public Optional<DepartmentDTO> findOneToDTO(Long id) {
+        // Optional<Account> accountOptional = findOne(id);
+//        if (accountOptional.get() == null) { // accountOptional.get() bởi vì là optional nên cần dùng get() để láy ra object
+//            return Optional.empty();
+//        } else {
+//            AccountDTO accountDTO = modelMapper.map(accountOptional.get(), AccountDTO.class);
+//            return Optional.of(accountDTO);
+//        }
+
+        return findOne(id).map(department -> modelMapper.map(department, DepartmentDTO.class));
+    }
+
+    @Override
+    public List<DepartmentDTO> search(Expression expression) {
+        Specification<Department> spec = buildWhere(expression);
+        List<Department> list = departmentRepository.findAll(spec);
+        return modelMapper.map(list, new TypeToken<List<DepartmentDTO>>() {
+        }.getType());
+    }
+
+    Specification<Department> buildWhere(Expression expression) {
+        DepartmentSpecification departmentSpecification = new DepartmentSpecification(expression);
+        return Specification.where(departmentSpecification);
+    }
+
+
     private DepartmentDTO toDTO(Department department) {
         DepartmentDTO departmentDTO = new DepartmentDTO();
         departmentDTO.setName(department.getName());
-        departmentDTO.setTotal_member(department.getTotal_number());
+        departmentDTO.setTotal_member(department.getTotalNumber());
         departmentDTO.setType(department.getType());
         departmentDTO.setCreateDate(department.getCreateDate());
         return departmentDTO;

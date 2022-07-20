@@ -9,5 +9,5 @@ import vti.com.entity.Account;
 @Repository
 public interface IAccountRepository extends JpaRepository<Account, Long>,
     JpaSpecificationExecutor<Account> {
-Optional<Account> findByLastNameLike(String lastName);
+
 }

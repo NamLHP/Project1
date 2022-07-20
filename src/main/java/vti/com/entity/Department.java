@@ -1,5 +1,7 @@
 package vti.com.entity;
 
+import java.io.Serializable;
+import org.hibernate.annotations.CreationTimestamp;
 import vti.com.entity.enumerated.DepartmentType;
 
 import javax.persistence.*;
@@ -8,7 +10,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "Department")
-public class Department {
+public class Department implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,13 +23,14 @@ public class Department {
   private String name;
 
   @Column(name = "total_member")
-  private Integer total_member;
+  private Integer totalMember;
 
   @Column(name = "type")
   @Enumerated(EnumType.STRING)
   private DepartmentType type;
 
   @Column(name = "created_date")
+  @CreationTimestamp
   private Date createDate;
 
   @OneToMany(mappedBy = "department")
@@ -51,12 +56,12 @@ public class Department {
     this.name = name;
   }
 
-  public Integer getTotal_number() {
-    return total_member;
+  public Integer getTotalNumber() {
+    return totalMember;
   }
 
-  public void setTotal_number(Integer total_number) {
-    this.total_member = total_number;
+  public void setTotalNumber(Integer total_number) {
+    this.totalMember = total_number;
   }
 
   public DepartmentType getType() {
@@ -82,6 +87,5 @@ public class Department {
   public void setAccountList(List<Account> accountList) {
     this.accountList = accountList;
   }
-
 
 }

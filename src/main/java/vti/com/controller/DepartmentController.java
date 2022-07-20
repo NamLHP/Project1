@@ -14,35 +14,47 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vti.com.entity.Department;
+import vti.com.entity.dto.AccountDTO;
 import vti.com.entity.dto.DepartmentDTO;
-import vti.com.entity.form.DepartmentForm;
 import vti.com.service.DepartmentServiceImp;
 
 import java.util.List;
+import vti.com.service.IDepartmentService;
+import vti.com.service.specification.Expression;
 
 @RestController
 @RequestMapping("api/v1/departments")
 public class DepartmentController {
 
     @Autowired
-    private DepartmentServiceImp departmentServiceImp;
+    private IDepartmentService IDepartmentServiceImp;
 
     @GetMapping("")
     ResponseEntity<Page<DepartmentDTO>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(departmentServiceImp.findAll(pageable));
+        return ResponseEntity.ok(IDepartmentServiceImp.findAll(pageable));
     }
 
     @GetMapping("{id}")
-    ResponseEntity<Optional<Department>> findOne(@PathVariable Long id) {
-        return ResponseEntity.ok(departmentServiceImp.findOne(id));
+    ResponseEntity<Optional<DepartmentDTO>> findOneToDTO(@PathVariable Long id) {
+        return ResponseEntity.ok().body(IDepartmentServiceImp.findOneToDTO(id));
+    }
+
+    @GetMapping("search")
+    ResponseEntity<List<DepartmentDTO>> search(
+        @RequestParam String field,
+        @RequestParam String operator,
+        @RequestParam String value) {
+        return ResponseEntity.ok()
+            .body(IDepartmentServiceImp.search(new Expression(field, operator, value)));
     }
 
     @DeleteMapping("/{id}")
     ResponseEntity<DepartmentDTO> deleteDepartmentByID(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok().body(departmentServiceImp.deleteDepartment(id));
+            return ResponseEntity.ok().body(IDepartmentServiceImp.deleteDepartment(id));
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -60,7 +72,7 @@ public class DepartmentController {
     @PostMapping("")
     public ResponseEntity<DepartmentDTO> create(@RequestBody Department department) {
         try {
-            return ResponseEntity.ok().body(departmentServiceImp.createDepartment(department));
+            return ResponseEntity.ok().body(IDepartmentServiceImp.createDepartment(department));
         } catch (NullPointerException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -71,7 +83,7 @@ public class DepartmentController {
     public ResponseEntity<DepartmentDTO> update(@RequestBody Department department,
         @PathVariable Long id) {
         try {
-            return ResponseEntity.ok().body(departmentServiceImp.updateDepartment(id,department));
+            return ResponseEntity.ok().body(IDepartmentServiceImp.updateDepartment(id,department));
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

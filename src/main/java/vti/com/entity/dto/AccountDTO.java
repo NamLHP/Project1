@@ -5,7 +5,7 @@ import vti.com.entity.enumerated.Role;
 
 import javax.persistence.*;
 
-public class AccountDto {
+public class AccountDTO {
 
   private Long id;
 
@@ -19,10 +19,10 @@ public class AccountDto {
 
   private String departmentName;
 
-  public AccountDto() {
+  public AccountDTO() {
   }
 
-  public AccountDto(Long id, String userName, String firstName, String lastName,
+  public AccountDTO(Long id, String userName, String firstName, String lastName,
       Role role, String departmentName) {
     this.id = id;
     this.userName = userName;

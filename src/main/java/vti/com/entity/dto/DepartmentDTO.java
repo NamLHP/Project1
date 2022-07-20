@@ -12,7 +12,7 @@ public class DepartmentDTO {
 
   private String name;
 
-  private Integer total_member;
+  private Integer totalMember;
 
   private DepartmentType type;
 
@@ -42,11 +42,11 @@ public class DepartmentDTO {
   }
 
   public Integer getTotal_member() {
-    return total_member;
+    return totalMember;
   }
 
-  public void setTotal_member(Integer total_member) {
-    this.total_member = total_member;
+  public void setTotal_member(Integer totalMember) {
+    this.totalMember = totalMember;
   }
 
   public DepartmentType getType() {

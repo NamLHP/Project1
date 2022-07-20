@@ -1,10 +1,17 @@
 package vti.com;
 
-public class Constant {
+public class Constants {
     public interface ACCOUNT {
         String ID = "id";
-        String USERNAME = "username";
+        String USERNAME = "userName";
         String FIRST_NAME = "firstName";
+    }
+
+    public interface DEPARTMENT {
+        String ID = "id";
+        String TOTAL_MEMBER = "totalMember";
+        String TYPE = "type";
+        String NAME = "name";
     }
 
     public interface OPERATOR {
