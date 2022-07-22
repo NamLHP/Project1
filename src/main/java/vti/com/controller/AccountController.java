@@ -20,6 +20,7 @@ import vti.com.entity.Account;
 import vti.com.entity.dto.AccountDTO;
 import vti.com.service.AccountServiceImp;
 import vti.com.service.IAccountService;
+import vti.com.service.criteria.AccountCriteria;
 import vti.com.service.specification.Expression;
 
 @RestController
@@ -33,8 +34,8 @@ public class AccountController {
   }
 
   @GetMapping("")
-  ResponseEntity<Page<AccountDTO>> findAll(Pageable pageable) {
-    return ResponseEntity.ok(IAccountService.findAll(pageable));
+  ResponseEntity<Page<AccountDTO>> findAll(AccountCriteria accountCriteria, Pageable pageable) {
+    return ResponseEntity.ok(IAccountService.findAll(accountCriteria , pageable));
   }
 
 

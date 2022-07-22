@@ -16,8 +16,12 @@ public class Constants {
 
     public interface OPERATOR {
         String EQUALS = "equals";
+        String NOT_EQUALS = "notEquals";
         String CONTAINS = "contains";
+        String NOT_CONTAINS = "notContains";
         String GREATER_THAN = "greaterThan";
+        String GREATER_THAN_OR_EQUALS = "greaterThanOrEquals";
         String LESS_THAN = "lessThan";
+        String LESS_THAN_OR_EQUALS = "lessThanOrEquals";
     }
 }

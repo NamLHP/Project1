@@ -8,11 +8,12 @@ import vti.com.entity.Account;
 
 import java.util.Optional;
 import vti.com.entity.dto.AccountDTO;
+import vti.com.service.criteria.AccountCriteria;
 import vti.com.service.specification.Expression;
 
 public interface IAccountService {
 
-  Page<AccountDTO> findAll(Pageable pageable);
+  Page<AccountDTO> findAll(AccountCriteria accountCriteria ,Pageable pageable);
 
   Optional<Account> findOne(Long id);
 
