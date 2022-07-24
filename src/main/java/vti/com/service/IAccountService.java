@@ -8,6 +8,7 @@ import vti.com.entity.Account;
 
 import java.util.Optional;
 import vti.com.entity.dto.AccountDTO;
+import vti.com.entity.form.AccountForm;
 import vti.com.service.criteria.AccountCriteria;
 import vti.com.service.specification.Expression;
 
@@ -17,9 +18,11 @@ public interface IAccountService {
 
   Optional<Account> findOne(Long id);
 
-  AccountDTO createAccount(Account account);
+  Optional<AccountDTO> createAccount(AccountForm accountForm);
 
-  AccountDTO updateAccount(Long id, Account account) throws NotFoundException;
+  Optional<AccountDTO> createAccount(Account account);
+
+  Optional<AccountDTO> updateAccount(Long id, AccountForm accountForm) throws NotFoundException;
 
   AccountDTO deleteAccount(Long id) throws NotFoundException;
 

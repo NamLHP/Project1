@@ -1,0 +1,5 @@
+1 - Hàm find all departments của e lúc trả về dto thì trường totalMember của e bị null.
+
+2 - filter theo date của e cũng chưa map .
+
+3 - hàm createAccount của e bị lỗi id not be null .

@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Filter<FIELD_TYPE> implements Serializable {
 
-    private FIELD_TYPE equals;
+    protected FIELD_TYPE equals;
 
-    private FIELD_TYPE notEquals;
+    protected FIELD_TYPE notEquals;
+
+
 }

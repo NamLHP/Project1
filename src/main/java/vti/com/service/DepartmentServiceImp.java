@@ -1,10 +1,9 @@
 package vti.com.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -12,34 +11,39 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import vti.com.Constants.DEPARTMENT;
 import vti.com.entity.Department;
-
 import vti.com.entity.dto.DepartmentDTO;
 import vti.com.repository.IDepartmentRepository;
-
-import java.util.Optional;
-
+import vti.com.service.criteria.DepartmentCriteria;
 import vti.com.service.specification.DepartmentSpecification;
 import vti.com.service.specification.Expression;
+import vti.com.service.specification.QueryService;
 
 @Service
 public class DepartmentServiceImp implements IDepartmentService {
 
-    @Autowired
-    private IDepartmentRepository departmentRepository;
+    private final IDepartmentRepository departmentRepository;
 
     private final ModelMapper modelMapper;
 
-    public DepartmentServiceImp(ModelMapper modelMapper) {
+    private final QueryService<Department> queryService;
+
+    public DepartmentServiceImp(IDepartmentRepository departmentRepository,
+        ModelMapper modelMapper,
+        QueryService<Department> queryService) {
+        this.departmentRepository = departmentRepository;
         this.modelMapper = modelMapper;
+        this.queryService = queryService;
     }
 
-    public Page<DepartmentDTO> findAll(Pageable pageable) {
-        Page<Department> departments = departmentRepository.findAll(pageable);
-        return new PageImpl(
-            departmentRepository.findAll(pageable).getContent().stream().map(this::toDTO)
-                .collect(Collectors.toList()), pageable, departments.getTotalElements());
+    public Page<DepartmentDTO> findAll(DepartmentCriteria departmentCriteria,Pageable pageable) {
+        Specification<Department> specification = buildSpecification(departmentCriteria);
+        Page<Department> page = departmentRepository.findAll(specification, pageable);
+        List<DepartmentDTO> dtoList = page.getContent().stream()
+            .map(department -> modelMapper.map(department, DepartmentDTO.class)).collect(
+                Collectors.toList());
+        return new PageImpl<>(dtoList, pageable, page.getTotalElements());
     }
 
     @Override
@@ -52,16 +56,6 @@ public class DepartmentServiceImp implements IDepartmentService {
         return toDTO(departmentRepository.save(department));
     }
 
-//    @Override
-//    public DepartmentDTO createDepartment(DepartmentForm departmentForm) {
-////        Account account = new Account();
-////        account = departmentRepository.findById(departmentForm.get);
-//        Department department = new Department();
-//        department.setName(departmentForm.getName());
-//        department.setTotal_number(department.getTotal_number());
-////        department.setAccountList(account);
-//        return toDTO(departmentRepository.save(department));
-//    }
 
     @Override
     @Transactional
@@ -96,13 +90,6 @@ public class DepartmentServiceImp implements IDepartmentService {
         return findOne(id).map(department -> modelMapper.map(department, DepartmentDTO.class));
     }
 
-    @Override
-    public List<DepartmentDTO> search(Expression expression) {
-        Specification<Department> spec = buildWhere(expression);
-        List<Department> list = departmentRepository.findAll(spec);
-        return modelMapper.map(list, new TypeToken<List<DepartmentDTO>>() {
-        }.getType());
-    }
 
     Specification<Department> buildWhere(Expression expression) {
         DepartmentSpecification departmentSpecification = new DepartmentSpecification(expression);
@@ -110,10 +97,40 @@ public class DepartmentServiceImp implements IDepartmentService {
     }
 
 
+    Specification<Department> buildSpecification(DepartmentCriteria departmentCriteria) {
+        Specification<Department> specification = Specification.where(null);
+
+        if (departmentCriteria.getId() != null) {
+            specification = specification
+                .and(queryService.buildLongFilter(DEPARTMENT.ID, departmentCriteria.getId()));
+        }
+
+        if (departmentCriteria.getName() != null) {
+            specification = specification
+                .and(queryService
+                    .buildStringFilter(DEPARTMENT.NAME, departmentCriteria.getName()));
+        }
+
+        if (departmentCriteria.getTotalMember() != null) {
+            specification = specification
+                .and(queryService
+                    .buildIntegerFilter(DEPARTMENT.TOTAL_MEMBER, departmentCriteria.getTotalMember()));
+        }
+
+        if (departmentCriteria.getCreateDate() != null) {
+            specification = specification
+                .and(queryService
+                    .buildDateFilter(DEPARTMENT.CREATED_DATE, departmentCriteria.getCreateDate()));
+        }
+
+        return specification;
+    }
+
+
     private DepartmentDTO toDTO(Department department) {
         DepartmentDTO departmentDTO = new DepartmentDTO();
         departmentDTO.setName(department.getName());
-        departmentDTO.setTotal_member(department.getTotalNumber());
+        departmentDTO.setTotal_member(department.getTotalMember());
         departmentDTO.setType(department.getType());
         departmentDTO.setCreateDate(department.getCreateDate());
         return departmentDTO;

@@ -1,11 +1,11 @@
 package vti.com.service.specification;
 
+import java.util.Date;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
-import vti.com.Constants;
 import vti.com.Constants.OPERATOR;
 
 public class CustomSpecification<T> implements Specification<T> {
@@ -28,6 +28,12 @@ public class CustomSpecification<T> implements Specification<T> {
 
         switch (operator) {
             case OPERATOR.EQUALS:
+
+                if (value instanceof Integer) {
+                    predicate = criteriaBuilder
+                        .equal(root.get(field), Integer.valueOf(String.valueOf(value)));
+                }
+
                 if (value instanceof Long) {
                     predicate = criteriaBuilder
                         .equal(root.get(field), Long.valueOf(String.valueOf(value)));
@@ -35,47 +41,97 @@ public class CustomSpecification<T> implements Specification<T> {
 
                 if (value instanceof String) {
                     predicate = criteriaBuilder.equal(root.get(field), String.valueOf(value));
+                }
+
+                if (value instanceof Date) {
+                    predicate = criteriaBuilder.equal(root.get(field), (Date) value);
                 }
                 break;
 
             case OPERATOR.NOT_EQUALS:
+
+                if (value instanceof Integer) {
+                    predicate = criteriaBuilder
+                        .notEqual(root.get(field), Integer.valueOf(String.valueOf(value)));
+                }
+
                 if (value instanceof Long) {
                     predicate = criteriaBuilder
-                        .equal(root.get(field), Long.valueOf(String.valueOf(value)));
+                        .notEqual(root.get(field), Long.valueOf(String.valueOf(value)));
                 }
 
                 if (value instanceof String) {
-                    predicate = criteriaBuilder.equal(root.get(field), String.valueOf(value));
+                    predicate = criteriaBuilder.notEqual(root.get(field), String.valueOf(value));
+                }
+
+                if (value instanceof Date) {
+                    predicate = criteriaBuilder.equal(root.get(field), (Date) value);
                 }
                 break;
 
             case OPERATOR.CONTAINS:
                 predicate = criteriaBuilder
-                    .equal(root.get(field), "%" + value + " % ");
+                    .like(root.get(field), "%" + value + "%");
                 break;
 
             case OPERATOR.NOT_CONTAINS:
-                predicate = criteriaBuilder.equal(root.get(field), "%" + value + " % ");
+                predicate = criteriaBuilder.notLike(root.get(field), "%" + value + "%");
                 break;
 
             case OPERATOR.GREATER_THAN:
-                predicate = criteriaBuilder
-                    .equal(root.get(field), Long.valueOf(String.valueOf(value)));
+                if (value instanceof Integer) {
+                    predicate = criteriaBuilder
+                        .greaterThan(root.get(field), Integer.valueOf(String.valueOf(value)));
+                }
+                if (value instanceof Long) {
+                    predicate = criteriaBuilder
+                        .greaterThan(root.get(field), Long.valueOf(String.valueOf(value)));
+                }
+                if (value instanceof Date) {
+                    predicate = criteriaBuilder.greaterThan(root.get(field), (Date) value);
+                }
                 break;
 
             case OPERATOR.GREATER_THAN_OR_EQUALS:
-                predicate = criteriaBuilder
-                    .equal(root.get(field), Long.valueOf(String.valueOf(value)));
+                if (value instanceof Integer) {
+                    predicate = criteriaBuilder
+                        .greaterThanOrEqualTo(root.get(field), Integer.valueOf(String.valueOf(value)));
+                }
+                if (value instanceof Long) {
+                    predicate = criteriaBuilder
+                        .greaterThanOrEqualTo(root.get(field), Long.valueOf(String.valueOf(value)));
+                }
+                if (value instanceof Date) {
+                    predicate = criteriaBuilder.greaterThanOrEqualTo(root.get(field), (Date) value);
+                }
                 break;
 
             case OPERATOR.LESS_THAN:
-                predicate = criteriaBuilder
-                    .equal(root.get(field), Long.valueOf(String.valueOf(value)));
+                if (value instanceof Integer) {
+                    predicate = criteriaBuilder
+                        .lessThan(root.get(field), Integer.valueOf(String.valueOf(value)));
+                }
+                if (value instanceof Long) {
+                    predicate = criteriaBuilder
+                        .lessThan(root.get(field), Long.valueOf(String.valueOf(value)));
+                }
+                if (value instanceof Date) {
+                    predicate = criteriaBuilder.lessThan(root.get(field), (Date) value);
+                }
                 break;
 
             case OPERATOR.LESS_THAN_OR_EQUALS:
-                predicate = criteriaBuilder
-                    .equal(root.get(field), Long.valueOf(String.valueOf(value)));
+                if (value instanceof Integer) {
+                    predicate = criteriaBuilder
+                        .lessThanOrEqualTo(root.get(field), Integer.valueOf(String.valueOf(value)));
+                }
+                if (value instanceof Long) {
+                    predicate = criteriaBuilder
+                        .lessThanOrEqualTo(root.get(field), Long.valueOf(String.valueOf(value)));
+                }
+                if (value instanceof Date) {
+                    predicate = criteriaBuilder.lessThanOrEqualTo(root.get(field), (Date) value);
+                }
                 break;
         }
         return predicate;

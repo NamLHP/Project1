@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vti.com.Constants.ACCOUNT;
 import vti.com.entity.Account;
 import vti.com.entity.dto.AccountDTO;
+import vti.com.entity.form.AccountForm;
 import vti.com.repository.IAccountRepository;
 
 import java.util.Optional;
@@ -27,13 +28,16 @@ public class AccountServiceImp implements IAccountService {
 
     private final IAccountRepository accountRepository;
     private final ModelMapper modelMapper;
-    private final QueryService queryService;
+    private final QueryService<Account> queryService;
+    private final IDepartmentService iDepartmentService;
 
     public AccountServiceImp(IAccountRepository accountRepository,
-        ModelMapper modelMapper, QueryService queryService) {
+        ModelMapper modelMapper, QueryService<Account> queryService,
+        IDepartmentService iDepartmentService) {
         this.accountRepository = accountRepository;
         this.modelMapper = modelMapper;
         this.queryService = queryService;
+        this.iDepartmentService = iDepartmentService;
     }
 
     @Override
@@ -54,18 +58,34 @@ public class AccountServiceImp implements IAccountService {
 
     @Override
     @Transactional
-    public AccountDTO createAccount(Account account) {
+    public Optional<AccountDTO> createAccount(AccountForm accountForm) {
+      return  iDepartmentService.findOneToDTO(accountForm.getDepartmentId()).map(departmentDTO -> {
+            Account account = modelMapper.map(accountForm,Account.class);
+            account.getDepartment(); //?
+            account.setId(null);
+            accountRepository.save(account);
+            return modelMapper.map(account,AccountDTO.class);
+        });
+    }
 
-        return toDTO(accountRepository.save(account));
+    @Override
+    public Optional<AccountDTO> createAccount(Account account) {
+        return  iDepartmentService.findOneToDTO(account.getDepartment().getId()).map(departmentDTO -> {
+            account.getDepartment(); //?
+            account.setId(null);
+            accountRepository.save(account);
+            return modelMapper.map(account,AccountDTO.class);
+        });
     }
 
 
     @Override
     @Transactional
-    public AccountDTO updateAccount(Long id, Account account) throws NotFoundException {
+    public Optional<AccountDTO> updateAccount(Long id, AccountForm accountForm) throws NotFoundException {
+        Account account = modelMapper.map(accountForm,Account.class);
         return findOne(id).map(acc -> {
             account.setId(id);
-            return toDTO(accountRepository.save(account));
+            return Optional.ofNullable(modelMapper.map(accountRepository.save(account),AccountDTO.class));
         }).orElseThrow(NotFoundException::new);
     }
 

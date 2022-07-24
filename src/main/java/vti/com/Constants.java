@@ -12,6 +12,7 @@ public class Constants {
         String TOTAL_MEMBER = "totalMember";
         String TYPE = "type";
         String NAME = "name";
+        String CREATED_DATE = "createDate";
     }
 
     public interface OPERATOR {

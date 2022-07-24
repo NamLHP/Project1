@@ -12,80 +12,80 @@ import java.util.List;
 @Table(name = "Department")
 public class Department implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-  @Column(name = "name")
-  private String name;
+    @Column(name = "name")
+    private String name;
 
-  @Column(name = "total_member")
-  private Integer totalMember;
+    @Column(name = "total_member")
+    private Integer totalMember;
 
-  @Column(name = "type")
-  @Enumerated(EnumType.STRING)
-  private DepartmentType type;
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private DepartmentType type;
 
-  @Column(name = "created_date")
-  @CreationTimestamp
-  private Date createDate;
+    @Column(name = "created_date")
+    @CreationTimestamp
+    private Date createDate;
 
-  @OneToMany(mappedBy = "department")
-  private List<Account> accountList;
+    @OneToMany(mappedBy = "department")
+    private List<Account> accountList;
 
 
-  public Department() {
-  }
+    public Department() {
+    }
 
-  public Long getId() {
-    return id;
-  }
+    public Long getId() {
+        return id;
+    }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public Integer getTotalNumber() {
-    return totalMember;
-  }
+    public Integer getTotalMember() {
+        return totalMember;
+    }
 
-  public void setTotalNumber(Integer total_number) {
-    this.totalMember = total_number;
-  }
+    public void setTotalMember(Integer totalMember) {
+        this.totalMember = totalMember;
+    }
 
-  public DepartmentType getType() {
-    return type;
-  }
+    public DepartmentType getType() {
+        return type;
+    }
 
-  public void setType(DepartmentType type) {
-    this.type = type;
-  }
+    public void setType(DepartmentType type) {
+        this.type = type;
+    }
 
-  public Date getCreateDate() {
-    return createDate;
-  }
+    public Date getCreateDate() {
+        return createDate;
+    }
 
-  public void setCreateDate(Date createDate) {
-    this.createDate = createDate;
-  }
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
 
 //  public List<Account> getAccountList() {
 //    return accountList;
 //  }
 
-  public void setAccountList(List<Account> accountList) {
-    this.accountList = accountList;
-  }
+    public void setAccountList(List<Account> accountList) {
+        this.accountList = accountList;
+    }
 
 }

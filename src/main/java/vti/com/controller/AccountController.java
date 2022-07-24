@@ -2,11 +2,13 @@ package vti.com.controller;
 
 import java.util.List;
 import java.util.Optional;
+import javax.validation.Valid;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vti.com.entity.Account;
 import vti.com.entity.dto.AccountDTO;
+import vti.com.entity.form.AccountForm;
 import vti.com.service.AccountServiceImp;
 import vti.com.service.IAccountService;
 import vti.com.service.criteria.AccountCriteria;
@@ -25,6 +28,7 @@ import vti.com.service.specification.Expression;
 
 @RestController
 @RequestMapping("api/v1/accounts")
+@Validated
 public class AccountController {
 
   private final IAccountService IAccountService;
@@ -64,20 +68,17 @@ public class AccountController {
   }
 
   @PostMapping("")
-  public ResponseEntity<AccountDTO> create(@RequestBody Account account) {
-    try {
-      return ResponseEntity.ok().body(IAccountService.createAccount(account));
-    } catch (NullPointerException e) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+  public ResponseEntity<Optional<AccountDTO>> create(@RequestBody  @Valid AccountForm accountForm) {
+    return ResponseEntity.ok().body(IAccountService.createAccount(accountForm));
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<AccountDTO> update(@RequestBody Account account, @PathVariable Long id) {
+  public ResponseEntity<Optional<AccountDTO>> update(@RequestBody @Valid AccountForm accountForm, @PathVariable Long id) {
     try {
-      return ResponseEntity.ok().body(IAccountService.updateAccount(id, account));
+      IAccountService.updateAccount(id, accountForm);
+      return ResponseEntity.ok().body(IAccountService.findOneToDTO(id));
     } catch (NotFoundException e) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
   }
 }

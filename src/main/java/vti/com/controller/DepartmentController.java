@@ -14,16 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vti.com.entity.Department;
-import vti.com.entity.dto.AccountDTO;
 import vti.com.entity.dto.DepartmentDTO;
-import vti.com.service.DepartmentServiceImp;
-
-import java.util.List;
 import vti.com.service.IDepartmentService;
-import vti.com.service.specification.Expression;
+import vti.com.service.criteria.DepartmentCriteria;
 
 @RestController
 @RequestMapping("api/v1/departments")
@@ -33,8 +28,8 @@ public class DepartmentController {
     private IDepartmentService IDepartmentServiceImp;
 
     @GetMapping("")
-    ResponseEntity<Page<DepartmentDTO>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(IDepartmentServiceImp.findAll(pageable));
+    ResponseEntity<Page<DepartmentDTO>> findAll(DepartmentCriteria departmentCriteria,Pageable pageable) {
+        return ResponseEntity.ok(IDepartmentServiceImp.findAll(departmentCriteria,pageable));
     }
 
     @GetMapping("{id}")
@@ -42,14 +37,6 @@ public class DepartmentController {
         return ResponseEntity.ok().body(IDepartmentServiceImp.findOneToDTO(id));
     }
 
-    @GetMapping("search")
-    ResponseEntity<List<DepartmentDTO>> search(
-        @RequestParam String field,
-        @RequestParam String operator,
-        @RequestParam String value) {
-        return ResponseEntity.ok()
-            .body(IDepartmentServiceImp.search(new Expression(field, operator, value)));
-    }
 
     @DeleteMapping("/{id}")
     ResponseEntity<DepartmentDTO> deleteDepartmentByID(@PathVariable Long id) {

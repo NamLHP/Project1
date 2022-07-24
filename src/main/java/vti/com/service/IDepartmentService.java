@@ -8,12 +8,13 @@ import java.util.List;
 import java.util.Optional;
 import vti.com.entity.dto.AccountDTO;
 import vti.com.entity.dto.DepartmentDTO;
+import vti.com.service.criteria.DepartmentCriteria;
 import vti.com.service.specification.Expression;
 
 
 public interface IDepartmentService {
 
-    Page<DepartmentDTO> findAll(Pageable pageable);
+    Page<DepartmentDTO> findAll(DepartmentCriteria departmentCriteria,Pageable pageable);
 
     Optional<Department> findOne(Long id);
 
@@ -25,5 +26,5 @@ public interface IDepartmentService {
 
     Optional<DepartmentDTO> findOneToDTO(Long id);
 
-    List<DepartmentDTO> search(Expression expression);
+
 }
