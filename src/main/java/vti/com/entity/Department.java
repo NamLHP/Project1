@@ -1,6 +1,7 @@
 package vti.com.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import org.hibernate.annotations.CreationTimestamp;
 import vti.com.entity.enumerated.DepartmentType;
 
@@ -31,7 +32,7 @@ public class Department implements Serializable {
 
     @Column(name = "created_date")
     @CreationTimestamp
-    private Date createDate;
+    private LocalDate createDate;
 
     @OneToMany(mappedBy = "department")
     private List<Account> accountList;
@@ -72,11 +73,11 @@ public class Department implements Serializable {
         this.type = type;
     }
 
-    public Date getCreateDate() {
+    public LocalDate getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDate createDate) {
         this.createDate = createDate;
     }
 

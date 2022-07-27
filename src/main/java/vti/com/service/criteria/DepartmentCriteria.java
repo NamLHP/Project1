@@ -3,7 +3,7 @@ package vti.com.service.criteria;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import vti.com.filter.DateFilter;
+import vti.com.filter.LocalDateFilter;
 import vti.com.filter.IntegerFilter;
 import vti.com.filter.LongFilter;
 import vti.com.filter.StringFilter;
@@ -21,5 +21,5 @@ public class DepartmentCriteria {
 
     //    private DepartmentType type;
 //
-    private DateFilter createDate;
+    private LocalDateFilter createDate;
 }

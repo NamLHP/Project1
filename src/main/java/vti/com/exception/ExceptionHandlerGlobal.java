@@ -8,9 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+@ControllerAdvice
 public class ExceptionHandlerGlobal extends ResponseEntityExceptionHandler {
 
     @Override
@@ -31,7 +34,7 @@ public class ExceptionHandlerGlobal extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorsList);
     }
 
-
+    @ExceptionHandler({NotFoundException.class})
     protected ResponseEntity<Object> handleMethodNotFoundException(NotFoundException e) {
         Errors error = new Errors()
             .errorCode("error.NotFoundException")

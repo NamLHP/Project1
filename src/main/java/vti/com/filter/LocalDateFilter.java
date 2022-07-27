@@ -1,82 +1,82 @@
 package vti.com.filter;
 
-import java.util.Date;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class DateFilter extends Filter<Date>  {
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private Date greaterThan;
+public class LocalDateFilter extends Filter<LocalDate>  {
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate greaterThan;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private Date greaterThanOrEquals;
+    private LocalDate greaterThanOrEquals;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private Date lessThan;
+    private LocalDate lessThan;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private Date lessThanOrEquals;
+    private LocalDate lessThanOrEquals;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    public Date getGreaterThan() {
+    public LocalDate getGreaterThan() {
         return greaterThan;
     }
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    public Date getEquals() {
+    public LocalDate getEquals() {
         return equals;
     }
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    public void setEquals(Date equals) {
+    public void setEquals(LocalDate equals) {
         this.equals = equals;
     }
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    public Date getNotEquals() {
+    public LocalDate getNotEquals() {
         return notEquals;
     }
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    public void setNotEquals(Date notEquals) {
+    public void setNotEquals(LocalDate notEquals) {
         this.notEquals = notEquals;
     }
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    public void setGreaterThan(Date greaterThan) {
+    public void setGreaterThan(LocalDate greaterThan) {
         this.greaterThan = greaterThan;
     }
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    public Date getGreaterThanOrEquals() {
+    public LocalDate getGreaterThanOrEquals() {
         return greaterThanOrEquals;
     }
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    public void setGreaterThanOrEquals(Date greaterThanOrEquals) {
+    public void setGreaterThanOrEquals(LocalDate greaterThanOrEquals) {
         this.greaterThanOrEquals = greaterThanOrEquals;
     }
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    public Date getLessThan() {
+    public LocalDate getLessThan() {
         return lessThan;
     }
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    public void setLessThan(Date lessThan) {
+    public void setLessThan(LocalDate lessThan) {
         this.lessThan = lessThan;
     }
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    public Date getLessThanOrEquals() {
+    public LocalDate getLessThanOrEquals() {
         return lessThanOrEquals;
     }
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    public void setLessThanOrEquals(Date lessThanOrEquals) {
+    public void setLessThanOrEquals(LocalDate lessThanOrEquals) {
         this.lessThanOrEquals = lessThanOrEquals;
     }
 }

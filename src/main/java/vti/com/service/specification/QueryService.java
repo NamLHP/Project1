@@ -3,7 +3,7 @@ package vti.com.service.specification;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import vti.com.Constants.OPERATOR;
-import vti.com.filter.DateFilter;
+import vti.com.filter.LocalDateFilter;
 import vti.com.filter.IntegerFilter;
 import vti.com.filter.LongFilter;
 import vti.com.filter.StringFilter;
@@ -102,7 +102,7 @@ public class QueryService<T> {
     }
 
 
-    public Specification<T> buildDateFilter(String field, DateFilter value) {
+    public Specification<T> buildDateFilter(String field, LocalDateFilter value) {
         if (value.getEquals() != null) {
             return new CustomSpecification<>(
                 new Expression(field, OPERATOR.EQUALS, value.getEquals()));

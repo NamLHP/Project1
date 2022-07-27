@@ -1,5 +1,8 @@
 package vti.com.entity.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -20,10 +23,6 @@ public class DepartmentDTO {
 
   private DepartmentType type;
 
-  @DateTimeFormat(pattern = "dd-MM-yyyy")
-  private Date createDate;
-
-// private List<Account> accountList;
-
+  private LocalDate createDate;
 
 }

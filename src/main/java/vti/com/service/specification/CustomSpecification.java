@@ -1,5 +1,6 @@
 package vti.com.service.specification;
 
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -43,8 +44,8 @@ public class CustomSpecification<T> implements Specification<T> {
                     predicate = criteriaBuilder.equal(root.get(field), String.valueOf(value));
                 }
 
-                if (value instanceof Date) {
-                    predicate = criteriaBuilder.equal(root.get(field), (Date) value);
+                if (value instanceof LocalDate) {
+                    predicate = criteriaBuilder.equal(root.get(field), (LocalDate) value);
                 }
                 break;
 
@@ -64,8 +65,8 @@ public class CustomSpecification<T> implements Specification<T> {
                     predicate = criteriaBuilder.notEqual(root.get(field), String.valueOf(value));
                 }
 
-                if (value instanceof Date) {
-                    predicate = criteriaBuilder.equal(root.get(field), (Date) value);
+                if (value instanceof LocalDate) {
+                    predicate = criteriaBuilder.equal(root.get(field), (LocalDate) value);
                 }
                 break;
 
@@ -87,8 +88,8 @@ public class CustomSpecification<T> implements Specification<T> {
                     predicate = criteriaBuilder
                         .greaterThan(root.get(field), Long.valueOf(String.valueOf(value)));
                 }
-                if (value instanceof Date) {
-                    predicate = criteriaBuilder.greaterThan(root.get(field), (Date) value);
+                if (value instanceof LocalDate) {
+                    predicate = criteriaBuilder.greaterThan(root.get(field), (LocalDate) value);
                 }
                 break;
 
@@ -101,8 +102,8 @@ public class CustomSpecification<T> implements Specification<T> {
                     predicate = criteriaBuilder
                         .greaterThanOrEqualTo(root.get(field), Long.valueOf(String.valueOf(value)));
                 }
-                if (value instanceof Date) {
-                    predicate = criteriaBuilder.greaterThanOrEqualTo(root.get(field), (Date) value);
+                if (value instanceof LocalDate) {
+                    predicate = criteriaBuilder.greaterThanOrEqualTo(root.get(field), (LocalDate) value);
                 }
                 break;
 
@@ -115,8 +116,8 @@ public class CustomSpecification<T> implements Specification<T> {
                     predicate = criteriaBuilder
                         .lessThan(root.get(field), Long.valueOf(String.valueOf(value)));
                 }
-                if (value instanceof Date) {
-                    predicate = criteriaBuilder.lessThan(root.get(field), (Date) value);
+                if (value instanceof LocalDate) {
+                    predicate = criteriaBuilder.lessThan(root.get(field), (LocalDate) value);
                 }
                 break;
 
@@ -129,8 +130,8 @@ public class CustomSpecification<T> implements Specification<T> {
                     predicate = criteriaBuilder
                         .lessThanOrEqualTo(root.get(field), Long.valueOf(String.valueOf(value)));
                 }
-                if (value instanceof Date) {
-                    predicate = criteriaBuilder.lessThanOrEqualTo(root.get(field), (Date) value);
+                if (value instanceof LocalDate) {
+                    predicate = criteriaBuilder.lessThanOrEqualTo(root.get(field), (LocalDate) value);
                 }
                 break;
         }

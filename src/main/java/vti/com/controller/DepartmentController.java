@@ -28,25 +28,29 @@ import vti.com.service.criteria.DepartmentCriteria;
 @Validated
 public class DepartmentController {
 
-    @Autowired
-    private IDepartmentService IDepartmentServiceImp;
+    private final IDepartmentService departmentService;
+
+    public DepartmentController(
+        IDepartmentService departmentService) {
+        this.departmentService = departmentService;
+    }
 
     @GetMapping("")
     ResponseEntity<Page<DepartmentDTO>> findAll(DepartmentCriteria departmentCriteria,
         Pageable pageable) {
-        return ResponseEntity.ok(IDepartmentServiceImp.findAll(departmentCriteria, pageable));
+        return ResponseEntity.ok(departmentService.findAll(departmentCriteria, pageable));
     }
 
     @GetMapping("{id}")
     ResponseEntity<Optional<DepartmentDTO>> findOneToDTO(@PathVariable Long id) {
-        return ResponseEntity.ok().body(IDepartmentServiceImp.findOneToDTO(id));
+        return ResponseEntity.ok().body(departmentService.findOneToDTO(id));
     }
 
 
     @DeleteMapping("/{id}")
     ResponseEntity<DepartmentDTO> deleteDepartmentByID(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok().body(IDepartmentServiceImp.deleteDepartment(id));
+            return ResponseEntity.ok().body(departmentService.deleteDepartment(id));
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -54,7 +58,7 @@ public class DepartmentController {
 
     @PostMapping("")
     public ResponseEntity<DepartmentDTO> create(@RequestBody @Valid DepartmentForm departmentForm) {
-        return ResponseEntity.ok().body(IDepartmentServiceImp.createDepartment(departmentForm));
+        return ResponseEntity.ok().body(departmentService.createDepartment(departmentForm));
     }
 
 
@@ -63,7 +67,7 @@ public class DepartmentController {
         @PathVariable Long id) {
         try {
             return ResponseEntity.ok()
-                .body(IDepartmentServiceImp.updateDepartment(id, departmentForm));
+                .body(departmentService.updateDepartment(id, departmentForm));
         } catch (NullPointerException | NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
