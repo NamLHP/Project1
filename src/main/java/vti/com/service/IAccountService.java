@@ -1,7 +1,7 @@
 package vti.com.service;
 
 import java.util.List;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import vti.com.entity.Account;
@@ -9,6 +9,7 @@ import vti.com.entity.Account;
 import java.util.Optional;
 import vti.com.entity.dto.AccountDTO;
 import vti.com.entity.form.AccountForm;
+import vti.com.exception.NotFoundException;
 import vti.com.service.criteria.AccountCriteria;
 import vti.com.service.specification.Expression;
 

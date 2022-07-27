@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +15,7 @@ import vti.com.Constants.ACCOUNT;
 import vti.com.entity.Account;
 import vti.com.entity.dto.AccountDTO;
 import vti.com.entity.form.AccountForm;
+import vti.com.exception.NotFoundException;
 import vti.com.repository.IAccountRepository;
 
 import java.util.Optional;
@@ -86,7 +87,7 @@ public class AccountServiceImp implements IAccountService {
         return findOne(id).map(acc -> {
             account.setId(id);
             return Optional.ofNullable(modelMapper.map(accountRepository.save(account),AccountDTO.class));
-        }).orElseThrow(NotFoundException::new);
+        }).orElseThrow(() -> new NotFoundException("id " , "Not Found ID" +  id ));
     }
 
     @Override

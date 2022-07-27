@@ -12,8 +12,10 @@ import vti.com.entity.enumerated.Role;
 @AllArgsConstructor
 public class AccountForm {
 
+    private Long id;
+
     @NotBlank(message = "Cant not blank this field")
-    @Length(max = 50 , message = "over 50 characters")
+    @Length(max = 50, message = "over 50 characters")
     private String userName;
 
     private String firstName;

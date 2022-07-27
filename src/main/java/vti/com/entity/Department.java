@@ -80,9 +80,9 @@ public class Department implements Serializable {
         this.createDate = createDate;
     }
 
-//  public List<Account> getAccountList() {
-//    return accountList;
-//  }
+//    public List<Account> getAccountList() {
+//        return accountList;
+//    }
 
     public void setAccountList(List<Account> accountList) {
         this.accountList = accountList;

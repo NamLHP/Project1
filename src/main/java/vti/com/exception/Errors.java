@@ -9,11 +9,11 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Errors {
+
+    private String errorCode;
     private HttpStatus status;
     private String message;
     private String field;
-
-
 
 
     public Errors field(String field) {
@@ -28,6 +28,11 @@ public class Errors {
 
     public Errors message(String message) {
         this.message = message;
+        return this;
+    }
+
+    public Errors errorCode(String errorCode) {
+        this.errorCode = errorCode;
         return this;
     }
 }

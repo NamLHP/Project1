@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vti.com.Constants.DEPARTMENT;
 import vti.com.entity.Department;
 import vti.com.entity.dto.DepartmentDTO;
+import vti.com.entity.form.DepartmentForm;
 import vti.com.repository.IDepartmentRepository;
 import vti.com.service.criteria.DepartmentCriteria;
 import vti.com.service.specification.DepartmentSpecification;
@@ -37,7 +38,7 @@ public class DepartmentServiceImp implements IDepartmentService {
         this.queryService = queryService;
     }
 
-    public Page<DepartmentDTO> findAll(DepartmentCriteria departmentCriteria,Pageable pageable) {
+    public Page<DepartmentDTO> findAll(DepartmentCriteria departmentCriteria, Pageable pageable) {
         Specification<Department> specification = buildSpecification(departmentCriteria);
         Page<Department> page = departmentRepository.findAll(specification, pageable);
         List<DepartmentDTO> dtoList = page.getContent().stream()
@@ -52,18 +53,20 @@ public class DepartmentServiceImp implements IDepartmentService {
     }
 
     @Override
-    public DepartmentDTO createDepartment(Department department) {
-        return toDTO(departmentRepository.save(department));
+    public DepartmentDTO createDepartment(DepartmentForm departmentForm) {
+        Department department = modelMapper.map(departmentForm, Department.class);
+        return modelMapper.map(departmentRepository.save(department), DepartmentDTO.class);
     }
 
 
     @Override
     @Transactional
-    public DepartmentDTO updateDepartment(Long id, Department department) throws NotFoundException {
+    public DepartmentDTO updateDepartment(Long id, DepartmentForm departmentForm)
+        throws NotFoundException {
         return findOne(id).map(dep -> {
-            department.setId(id);
-            departmentRepository.save(department);
-            return toDTO(department);
+            Department department = modelMapper.map(departmentForm, Department.class);
+            department.setId(departmentForm.getId());
+            return modelMapper.map(departmentRepository.save(department), DepartmentDTO.class);
         }).orElseThrow(NotFoundException::new);
     }
 
@@ -75,7 +78,6 @@ public class DepartmentServiceImp implements IDepartmentService {
             return toDTO(dep);
         }).orElseThrow(NotFoundException::new);
     }
-
 
     @Override
     public Optional<DepartmentDTO> findOneToDTO(Long id) {
@@ -114,7 +116,8 @@ public class DepartmentServiceImp implements IDepartmentService {
         if (departmentCriteria.getTotalMember() != null) {
             specification = specification
                 .and(queryService
-                    .buildIntegerFilter(DEPARTMENT.TOTAL_MEMBER, departmentCriteria.getTotalMember()));
+                    .buildIntegerFilter(DEPARTMENT.TOTAL_MEMBER,
+                        departmentCriteria.getTotalMember()));
         }
 
         if (departmentCriteria.getCreateDate() != null) {
@@ -130,7 +133,7 @@ public class DepartmentServiceImp implements IDepartmentService {
     private DepartmentDTO toDTO(Department department) {
         DepartmentDTO departmentDTO = new DepartmentDTO();
         departmentDTO.setName(department.getName());
-        departmentDTO.setTotal_member(department.getTotalMember());
+        departmentDTO.setTotalMember(department.getTotalMember());
         departmentDTO.setType(department.getType());
         departmentDTO.setCreateDate(department.getCreateDate());
         return departmentDTO;
