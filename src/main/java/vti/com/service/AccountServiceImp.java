@@ -1,5 +1,6 @@
 package vti.com.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
@@ -15,6 +16,8 @@ import vti.com.Constants.ACCOUNT;
 import vti.com.entity.Account;
 import vti.com.entity.dto.AccountDTO;
 import vti.com.entity.form.AccountForm;
+import vti.com.exception.BusinessError;
+import vti.com.exception.BusinessErrorException;
 import vti.com.exception.NotFoundException;
 import vti.com.repository.IAccountRepository;
 
@@ -87,7 +90,12 @@ public class AccountServiceImp implements IAccountService {
         return findOne(id).map(acc -> {
             account.setId(id);
             return Optional.ofNullable(modelMapper.map(accountRepository.save(account),AccountDTO.class));
-        }).orElseThrow(() -> new NotFoundException("id " , "Not Found ID" +  id ));
+        }).orElseThrow(
+            () -> new BusinessErrorException()
+                .businessError(
+                    new BusinessError()
+                        .errorCode("error.account.idIsNotExists")
+                        .params(Collections.singletonList(id))));
     }
 
     @Override
@@ -96,7 +104,7 @@ public class AccountServiceImp implements IAccountService {
         return findOne(id).map(acc -> {
             accountRepository.delete(acc);
             return toDTO(acc);
-        }).orElseThrow(NotFoundException::new);
+        }).orElseThrow();
     }
 
     @Override
